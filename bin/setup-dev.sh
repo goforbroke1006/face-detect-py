@@ -9,4 +9,4 @@ sudo apt-get install -y python-opencv
 sudo apt-get install -y python-tk
 
 pip install --upgrade pip
-pip install -r requirements.txt
+sudo pip install -r requirements.txt

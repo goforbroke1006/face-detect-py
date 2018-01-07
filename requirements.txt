@@ -3,3 +3,4 @@ numpy==1.13.1
 dlib==19.7.0
 opencv-python==3.3.0.10
 imutils==0.4.3
+pillow==5.0.0
