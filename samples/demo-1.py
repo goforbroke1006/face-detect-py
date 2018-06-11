@@ -5,9 +5,9 @@ import dlib
 import cv2
 from imutils import face_utils
 
-img_input = np.array(Image.open('./samples/images/5.jpg'))
+img_input = np.array(Image.open('./images/5.jpg'))
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('./../shape_predictor_68_face_landmarks.dat')
 img_gray = cv2.cvtColor(img_input, cv2.COLOR_BGR2GRAY)
 rects = detector(img_gray, 0)
 if len(rects) == 0:

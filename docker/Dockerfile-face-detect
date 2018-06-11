@@ -1,0 +1,17 @@
+FROM python:2.7
+
+MAINTAINER Sergey Cherkesov <sergey.cherkesov.1006@gmail.com>
+
+RUN apt-get update
+
+COPY docker/install.sh /opt/app/docker/install.sh
+RUN bash /opt/app/docker/install.sh
+
+RUN apt-get -y install libgtk-3-dev libboost-all-dev python-opencv python-tk
+
+RUN mkdir -p /opt/app/
+
+COPY requirements.txt /opt/app/requirements.txt
+WORKDIR /opt/app/
+RUN pip install -r requirements.txt
+COPY . /opt/app

@@ -4,4 +4,8 @@ services:
   app:
     build: .
     ports:
-      - "8010:8080"
+      - "8080:8080"
+#    working_dir: /opt/app/
+    volumes:
+      - ./:/opt/application/
+#      - /usr/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages
