@@ -1,10 +1,15 @@
+import PIL
 import numpy as np
 import cv2
 import dlib
+from PIL.Image import Image
 from imutils import face_utils
 
 
 def detect(pil_image):
+    if not isinstance(pil_image, Image):
+        return ()
+
     img_input = np.array(pil_image)
 
     img_gray = cv2.cvtColor(img_input, cv2.COLOR_BGR2GRAY)

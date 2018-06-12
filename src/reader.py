@@ -6,6 +6,8 @@ from PIL import Image
 
 
 def get_image_from_base64(base64_str):
+    if not isinstance(base64_str, basestring):
+        return None
     base64_str = base64_str.replace('\n', '')
     base64_str = re.sub("data:image/[\w]+;base64,", "", base64_str)
     b64decode = base64.b64decode(base64_str)
