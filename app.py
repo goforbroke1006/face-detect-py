@@ -6,11 +6,7 @@ import numpy as np
 
 from src.detector import detect
 from src.formatter import group_by_context
-from src.reader import get_image_from_base64, get_image_from_file
-
-# im = get_image_from_base64(
-#     open('samples/5.txt', 'r').read()
-# )
+from src.reader import get_image_from_file
 
 im = get_image_from_file('samples/images/6.jpg')
 
