@@ -7,8 +7,6 @@ from imutils import face_utils
 
 im = Image.open('./images/5.jpg')
 img_input = np.array(im)
-im.rotate(45).show()
-os._exit(0)
 
 
 detector = dlib.get_frontal_face_detector()
