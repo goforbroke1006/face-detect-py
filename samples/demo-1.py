@@ -5,7 +5,12 @@ import dlib
 import cv2
 from imutils import face_utils
 
-img_input = np.array(Image.open('./images/5.jpg'))
+im = Image.open('./images/5.jpg')
+img_input = np.array(im)
+im.rotate(45).show()
+os._exit(0)
+
+
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('./../shape_predictor_68_face_landmarks.dat')
 img_gray = cv2.cvtColor(img_input, cv2.COLOR_BGR2GRAY)
