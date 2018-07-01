@@ -75,8 +75,8 @@ function getPoints(base64Img) {
         let xhr = new XMLHttpRequest();
 
         const body = 'image=' + encodeURIComponent(base64Img);
-        
-        xhr.open("POST", 'http://localhost:8001/', true);
+
+        xhr.open("POST", 'http://167.99.242.86:8001/', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         xhr.onreadystatechange = function () {
