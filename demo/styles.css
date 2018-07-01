@@ -2,8 +2,23 @@
     border: 2px solid rgba(81, 81, 81, 0.6);
 }
 
+#drawPane {
+    top: 2px;
+    left: 2px;
+    position: absolute;
+}
+
 .canvasWrap {
     position: relative;
+}
+
+#canvasSystem {
+    float: left;
+}
+
+#lips-controller {
+    margin-left: 50px;
+    float: left;
 }
 
 .canvasWrap .loadImg {

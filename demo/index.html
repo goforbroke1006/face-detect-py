@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<h1>Demo</h1>
+
+<div>
+    <div id="canvasSystem">
+        <div class="canvasWrap">
+            <img class="loadImg" src="load.gif">
+            <canvas id="viewport" width="480" height="480"></canvas>
+            <canvas id="drawPane" width="480" height="480"></canvas>
+        </div>
+        <input id="loadImgBtn" type="file" accept="image/png,image/jpeg"/>
+    </div>
+
+    <div id="lips-controller">
+        <h3>Lips color</h3>
+        <div class="palette">
+            <div style="background: rgba(255,88,96,0.3);"></div>
+            <div style="background: rgba(255,64,20,0.3);"></div>
+            <div style="background: rgba(255,11,12,0.3);"></div>
+            <br/>
+            <div style="background: rgba(255,34,117,0.3);"></div>
+            <div style="background: rgba(255,52,239,0.3);"></div>
+            <div style="background: rgba(224,129,255,0.3);"></div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+    let viewport = document.getElementById("viewport"),
+        drawPane = document.getElementById("drawPane"),
+        loadPreview = document.querySelector(".canvasWrap .loadImg");
+    let facePointsCache = null;
+
+    document.getElementById("loadImgBtn").onchange = function () {
+        readURL(this)
+            .then(function (resImg) {
+                loadPreview.style.visibility = 'visible';
+                drawPane.getContext('2d').clearRect(0, 0, drawPane.width, drawPane.height);
+                return loadImage(viewport, resImg);
+            })
+            .then(function () {
+                const base64img = viewport.toDataURL();
+                return getPoints(base64img);
+            })
+            .then(function (points) {
+                // drawPoints(drawPane, points);
+                // console.log(points);
+                facePointsCache = points[0];
+                loadPreview.style.visibility = 'hidden';
+            })
+            .catch(function (err) {
+                console.log(err);
+                loadPreview.style.visibility = 'hidden';
+                // TODO: show error popup
+            });
+    };
+
+    let probes = document.querySelectorAll('#lips-controller .palette > div');
+    for (let i = 0; i < probes.length; i++) {
+        /**
+         *
+         * @param {MouseEvent} evt
+         */
+        let onclick = function (evt) {
+            console.log(evt.target.style.backgroundColor);
+
+            drawPane.getContext('2d').clearRect(0, 0, drawPane.width, drawPane.height);
+
+            let bottomLipPoints = extractBottomLipPoints(facePointsCache);
+            fillShape(drawPane, bottomLipPoints, evt.target.style.backgroundColor);
+
+            let topLipPoints = extractTopLipPoints(facePointsCache);
+            fillShape(drawPane, topLipPoints, evt.target.style.backgroundColor);
+        };
+        probes[i].onclick = onclick
+    }
+</script>
+
+</body>
+</html>

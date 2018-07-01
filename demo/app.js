@@ -1,5 +1,23 @@
 "use strict";
 
+class FacePoints {
+    constructor() {
+        this.eye_left = [];
+        this.eye_right = [];
+
+        this.eyebrow_left = [];
+        this.eyebrow_right = [];
+
+        this.nose_median = [];
+        this.nose_bottom = [];
+
+        this.lips_inner = [];
+        this.lips_outer = [];
+
+        this.face_contour = [];
+    }
+}
+
 function readURL(input) {
     return new Promise(function (resolve, reject) {
         if (input.files && input.files[0]) {
@@ -17,6 +35,12 @@ function readURL(input) {
     });
 }
 
+/**
+ *
+ * @param {HTMLCanvasElement} canvas
+ * @param {String} imageSource
+ * @returns {Promise<>}
+ */
 function loadImage(canvas, imageSource) {
     return new Promise(function (resolve, reject) {
         let img = new Image();
@@ -41,13 +65,17 @@ function loadImage(canvas, imageSource) {
     })
 }
 
+/**
+ * Load face points from server
+ * @param {String} base64Img
+ * @returns {Promise<FacePoints[]>}
+ */
 function getPoints(base64Img) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
 
         const body = 'image=' + encodeURIComponent(base64Img);
-
-        // xhr.open("POST", 'http://167.99.242.86:8001/', true);
+        
         xhr.open("POST", 'http://localhost:8001/', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -68,18 +96,17 @@ function getPoints(base64Img) {
 /**
  *
  * @param {HTMLCanvasElement} canvas
- * @param {Array} points
+ * @param {FacePoints} facePoints
  */
-function drawPoints(canvas, points) {
-    let pointSet = points[0];
+function drawPoints(canvas, facePoints) {
     let context = canvas.getContext("2d");
     let radius = 2;
 
-    for (let key in pointSet) {
-        if (!pointSet.hasOwnProperty(key)) {
+    for (let key in facePoints) {
+        if (!facePoints.hasOwnProperty(key)) {
             continue;
         }
-        let partPoints = pointSet[key];
+        let partPoints = facePoints[key];
         for (let pi = 0; pi < partPoints.length; pi++) {
             let p = partPoints[pi],
                 x = p[0],
@@ -98,7 +125,7 @@ function drawPoints(canvas, points) {
 /**
  * Draw polygon and fill it
  * @param {HTMLCanvasElement} canvas
- * @param {Array} points
+ * @param {Number[][]} points
  * @param {String} color
  */
 function fillShape(canvas, points, color) {
@@ -113,6 +140,11 @@ function fillShape(canvas, points, color) {
     ctx.fill();
 }
 
+/**
+ * Extract to one array all point which is contour of top lip
+ * @param {Array} pointSet
+ * @returns {Number[] | string}
+ */
 function extractTopLipPoints(pointSet) {
     let inLine = pointSet['lips_inner'];
     let outLine = pointSet['lips_outer'];
@@ -121,6 +153,11 @@ function extractTopLipPoints(pointSet) {
     return top.concat(bottom.reverse());
 }
 
+/**
+ * Extract to one array all point which is contour of bottom lip
+ * @param {Array} pointSet
+ * @returns {Number[] | string}
+ */
 function extractBottomLipPoints(pointSet) {
     let inLine = pointSet['lips_inner'];
     let outLine = pointSet['lips_outer'];

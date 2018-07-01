@@ -1,5 +1,6 @@
 import cgi
 import json
+import os
 import sys
 import urlparse
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
@@ -13,6 +14,10 @@ class HttpProcessor(BaseHTTPRequestHandler):
     def do_POST(self):
         self.send_response(200)
         self.send_header('content-type', 'application/json')
+        allow_origin_ = os.environ['ACCESS_CONTROL_ALLOW_ORIGIN'] \
+            if 'ACCESS_CONTROL_ALLOW_ORIGIN' in os.environ \
+            else 'http://localhost'
+        self.send_header("Access-Control-Allow-Origin", allow_origin_)
         self.end_headers()
 
         ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))

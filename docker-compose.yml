@@ -7,3 +7,5 @@ services:
       - "8001:8080"
     volumes:
       - ./:/opt/application/
+    env_file:
+      - .env
